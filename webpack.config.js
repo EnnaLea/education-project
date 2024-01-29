@@ -11,13 +11,16 @@ const stylesHandler = isProduction
   : "style-loader";
 
 const config = {
-  entry: "./src/index.js",
+  entry: "./src/js/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
+    filename: 'bundle.js'
   },
   devServer: {
     open: true,
     host: "localhost",
+    port: 5000,
+    static: path.resolve(__dirname, "dist")
   },
   plugins: [
     new HtmlWebpackPlugin({
