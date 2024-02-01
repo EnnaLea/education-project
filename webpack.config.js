@@ -19,7 +19,6 @@ const config = {
   devServer: {
     open: true,
     host: "localhost",
-    port: 5000,
     static: path.resolve(__dirname, "dist")
   },
   plugins: [
@@ -41,7 +40,7 @@ const config = {
         use: [stylesHandler, "css-loader"],
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|ico)$/i,
         type: "asset",
       },
 

@@ -1,7 +1,54 @@
 body {
     font-family: Arial, sans-serif;
 }
+
+
 .container {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  #books-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 10px;
+  }
+  
+  .book-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .book-card img {
+    width: 100%;
+    height: auto;
+  }
+
+
+/* .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 10px;
+}
+.book-card {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.book-card img {
+    width: 100%;
+    height: auto;
+}
+.book-card p {
+    margin: 0;
+} */
+
+
+
+
+/* .container {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -36,4 +83,4 @@ body {
     padding: 20px;
     border: 1px solid #ccc;
     margin-top: 20px;
-}
+} */

@@ -74,9 +74,6 @@
             const data = await response.json();
             booksList.innerHTML = '';
 
-
-        
-
             data.works.forEach(book => {
                 const listItem = document.createElement('li');
                 listItem.textContent = book.title;

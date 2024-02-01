@@ -2,21 +2,25 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Webpack App</title>
+        <title>AllBooks</title>
+        <link rel="icon" type="image/x-icon" href="./src/img/favicon.ico">
     </head>
     <body>
+
         <div class="container">
+            <h1>Book Search</h1>
+            <input type="text" id="search-input" placeholder="Enter category..." />
+            <button id="search-button">Search</button>
+            <div id="books-container"></div>
+          </div>
+          
+        <!-- <div class="container">
             <div class="search-box">
                 <input type="text" id="search-input" placeholder="Enter category...">
                 <button id="search-button">Search</button>
             </div>
-            <ul class="books-list" id="books-list"></ul>
-            <div class="book-description" id="book-description">
-                <h2 id="book-title"></h2>
-                <p id="book-authors"></p>
-                <p id="book-description"></p>
-            </div>
-        </div>
+            <div id="books-list" class="books-list"></div>
+        </div> -->
     </body>
     
 </html>
