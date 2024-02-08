@@ -18,70 +18,77 @@ const bookDescriptionText = document.getElementById("book-description");
 // });
 
 searchButton.addEventListener("click", async () => {
-      const category = searchInput.value;
-  const response = await fetch(
-    `https://openlibrary.org/subjects/${category}.json`
-  );
-  const data = await response.json();
-  booksList.innerHTML = "";
+  try {
+    const category = searchInput.value;
+    const response = await fetch(
+      `https://openlibrary.org/subjects/${category}.json`
+    );
+    const data = await response.json();
+    booksList.innerHTML = "";
 
-  let html = "";
-    data.works.forEach((book) => {
-    html += `
-    <div class="book-item text-center" data-id="${book.id}">
-    <div class="book-img">
-        <img src="${book.cover}" alt="">
-    </div>
-    <div class="book-name card">
-        <h3 class="card-title" id="card-title">${book.title}</h3>
-        <p>Author: ${book.authors[0].name}</p> 
-        <button class="description-btn" data-id="${book.key}" id="get-description" >Get description</button>
-    </div>
-    </div> 
-         
-        `;
-  });
+    let html = "";
+    if (data.works) {
+      data.works.forEach((book) => {
+        html += `
+              <div class="book-item text-center" data-id="${book.id}">
+              <div class="book-img">
+                  <img src="${book.cover}" alt="">
+              </div>
+              <div class="book-name card">
+                  <h3 class="card-title" id="card-title">${book.title}</h3>
+                  <p>Author: ${book.authors[0].name}</p> 
+                  <button class="description-btn" data-id="${book.key}" id="get-description" >Get description</button>
+              </div>
+              </div> 
+                   
+                  `;
+      });
+
+      booksList.classList.remove("notFound");
+    } else {
+      html = "Sorry, we didn't find any book!";
+      booksList.classList.add("notFound");
+    }
+
     booksList.innerHTML = html;
 
-    const descriptionButtons = document.getElementsByClassName("description-btn");
+    const descriptionButtons =
+      document.getElementsByClassName("description-btn");
 
     for (const button of descriptionButtons) {
       button.addEventListener("click", async () => {
-        const bookId = button.dataset.id;
-        const bookResponse = await fetch(`https://openlibrary.org${bookId}.json`);
-        const bookData = await bookResponse.json();
+        try {
+          const bookId = button.dataset.id;
+          const bookResponse = await fetch(
+            `https://openlibrary.org${bookId}.json`
+          );
+          const bookData = await bookResponse.json();
 
-        if (typeof bookData.description === 'object' && bookData.description !== null) {
-            bookDescriptionText.textContent = bookData.description.value || "No description available.";
-            console.log(bookData.description);
-        } else {
-            bookDescriptionText.textContent = bookData.description || "No description available.";
-            console.log(bookData.description);
+          if (
+            typeof bookData.description === "object" &&
+            bookData.description !== null
+          ) {
+            bookDescriptionText.textContent =
+              bookData.description.value || "No description available.";
+          } else {
+            bookDescriptionText.textContent =
+              bookData.description || "No description available.";
+          }
+
+          bookDescription.parentElement.classList.add("showdescription");
+        } catch (error) {
+          console.error("Error fetching data:", error);
         }
-        
-        bookDescription.parentElement.classList.add("showdescription");
       });
     }
-    
 
-
-  descriptionCloseBtn.addEventListener('click', () =>{
-    bookDescription.parentElement.classList.remove('showdescription');
+    descriptionCloseBtn.addEventListener("click", () => {
+      bookDescription.parentElement.classList.remove("showdescription");
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 });
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 const searchButton = document.getElementById("search-btn");
@@ -146,11 +153,6 @@ const bookDescriptionText = document.getElementById("book-description");
 // });
 
 */
-
-
-
-
-
 
 //////////PROVA.HTML
 // const searchButton = document.getElementById('search-btn');
