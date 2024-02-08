@@ -11,7 +11,7 @@ const stylesHandler = isProduction
   : "style-loader";
 
 const config = {
-  entry: "./src/js/index.js",
+  entry: "./src/js/script.js",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: 'bundle.js'
@@ -23,7 +23,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "index.html",
+      template: "prova.html",
     }),
 
     // Add your plugins here
