@@ -4,6 +4,10 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+
+const DotenvWebpackPlugin = require('dotenv-webpack');
+
+
 const isProduction = process.env.NODE_ENV == "production";
 
 const stylesHandler = isProduction
@@ -25,6 +29,11 @@ const config = {
     new HtmlWebpackPlugin({
       template: "prova.html",
     }),
+
+    new DotenvWebpackPlugin(),
+
+
+
 
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/
