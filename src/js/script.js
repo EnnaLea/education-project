@@ -2,6 +2,7 @@ import "../css/style.css";
 
 //results with cards
 
+
 const searchButton = document.getElementById("search-btn");
 const searchInput = document.getElementById("search-input");
 const booksList = document.getElementById("book");
@@ -11,84 +12,386 @@ const descriptionCloseBtn = document.getElementById("description-close-btn");
 
 const bookDescriptionText = document.getElementById("book-description");
 
-// const closeButton = document.querySelector(".description-close-btn");
 
-// closeButton.addEventListener("click", () => {
-//   bookDescription.classList.remove("show");
-// });
+// searchButton.addEventListener("", async () => {
+//     try {
+//        const category = searchInput.value;
+//        const response = await fetch(
+//          `https://openlibrary.org/subjects/${category}.json`
+//        );
+//        const data = await response.json();
+//        booksList.innerHTML = "";
+   
+//        let html = "";
+//        if (data.works) {
+//          data.works.forEach((book) => {
+//            html += `
+//                  <div class="book-item text-center" data-id="${book.id}">
+//                  <div class="book-img">
+//                  <img src="${book.isbn[0] ? `https://covers.openlibrary.org/b/isbn/${book.isbn[0]}-M.jpg` : ''}" alt="">
+//                  </div>
+//                  <div class="book-name card">
+//                      <h3 class="card-title" id="card-title">${book.title}</h3>
+//                      <p>Author: ${book.authors[0].name}</p> 
+//                      <button class="description-btn" data-id="${book.key}" id="get-description" >Get description</button>
+//                  </div>
+//                  </div> 
+//                      `;
+//          });
+   
+//          booksList.classList.remove("notFound");
+//        } else {
+//          html = "Sorry, we didn't find any book!";
+//          booksList.classList.add("notFound");
+//        }
+   
+//        booksList.innerHTML = html;
+   
+//        const descriptionButtons =
+//          document.getElementsByClassName("description-btn");
+   
+//        for (const button of descriptionButtons) {
+//          button.addEventListener("click", async () => {
+//            try {
+//              const bookId = button.dataset.id;
+//              const bookResponse = await fetch(
+//                `https://openlibrary.org${bookId}.json`
+//              );
+//              const bookData = await bookResponse.json();
+   
+//              if (
+//                typeof bookData.description === "object" &&
+//                bookData.description !== null
+//              ) {
+//                bookDescriptionText.textContent =
+//                  bookData.description.value || "No description available.";
+//              } else {
+//                bookDescriptionText.textContent =
+//                  bookData.description || "No description available.";
+//              }
+   
+//              bookDescription.parentElement.classList.add("showdescription");
+//            } catch (error) {
+//              console.error("Error fetching data:", error);
+//            }
+//          });
+//        }
+   
+//        descriptionCloseBtn.addEventListener("click", () => {
+//          bookDescription.parentElement.classList.remove("showdescription");
+//        });
+//      } catch (error) {
+//        console.error("Error fetching data:", error);
+//      }
+//    });
+
+
+
+
 
 searchButton.addEventListener("click", async () => {
-  try {
-    const category = searchInput.value;
-    const response = await fetch(
-      `https://openlibrary.org/subjects/${category}.json`
-    );
-    const data = await response.json();
-    booksList.innerHTML = "";
-
-    let html = "";
-    if (data.works) {
-      data.works.forEach((book) => {
-        html += `
-              <div class="book-item text-center" data-id="${book.id}">
-              <div class="book-img">
-                  <img src="${book.cover}" alt="">
-              </div>
-              <div class="book-name card">
-                  <h3 class="card-title" id="card-title">${book.title}</h3>
-                  <p>Author: ${book.authors[0].name}</p> 
-                  <button class="description-btn" data-id="${book.key}" id="get-description" >Get description</button>
-              </div>
-              </div> 
-                   
-                  `;
-      });
-
-      booksList.classList.remove("notFound");
-    } else {
-      html = "Sorry, we didn't find any book!";
-      booksList.classList.add("notFound");
-    }
-
-    booksList.innerHTML = html;
-
-    const descriptionButtons =
-      document.getElementsByClassName("description-btn");
-
-    for (const button of descriptionButtons) {
-      button.addEventListener("click", async () => {
-        try {
-          const bookId = button.dataset.id;
-          const bookResponse = await fetch(
-            `https://openlibrary.org${bookId}.json`
-          );
-          const bookData = await bookResponse.json();
-
-          if (
-            typeof bookData.description === "object" &&
-            bookData.description !== null
-          ) {
-            bookDescriptionText.textContent =
-              bookData.description.value || "No description available.";
-          } else {
-            bookDescriptionText.textContent =
-              bookData.description || "No description available.";
+    try {
+      const category = searchInput.value;
+      const response = await fetch(`https://openlibrary.org/subjects/${category}.json`);
+      const data = await response.json();
+      booksList.innerHTML = "";
+        
+      if (data.works) {
+        const html = data.works.map((book) => `
+          <div class="book-item text-center" data-id="${book.id}">
+            <div class="book-img">
+              <img src="${book.cover_id ? `https://covers.openlibrary.org/b/id/${book.cover_id}-L.jpg` : ''}" alt="cover">
+            </div>
+            <div class="book-name">
+              <h3>${book.title}</h3>
+              <p>Author: ${book.authors[0]?.name || 'Unknown'}</p> 
+              <button class="description-btn" data-id="${book.key}" id="get-description">Get description</button>
+            </div>
+          </div>
+        `).join('');
+  
+        booksList.innerHTML = html;
+        booksList.classList.remove("notFound");
+      } else {
+        booksList.innerHTML = "Sorry, we didn't find any book!";
+        booksList.classList.add("notFound");
+      }
+  
+      const descriptionButtons = document.querySelectorAll(".description-btn");
+  
+      descriptionButtons.forEach((button) => {
+        button.addEventListener("click", async () => {
+          try {
+            const bookId = button.dataset.id;
+            const bookResponse = await fetch(`https://openlibrary.org${bookId}.json`);
+            const bookData = await bookResponse.json();
+  
+            const descriptionText = bookData.description?.value || bookData.description || "No description available.";
+            bookDescriptionText.textContent = descriptionText;
+  
+            bookDescription.parentElement.classList.add("showdescription");
+          } catch (error) {
+            console.error("Error fetching book data:", error);
           }
-
-          bookDescription.parentElement.classList.add("showdescription");
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
+        });
       });
+  
+      descriptionCloseBtn.addEventListener("click", () => {
+        bookDescription.parentElement.classList.remove("showdescription");
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
+  });
+  
 
-    descriptionCloseBtn.addEventListener("click", () => {
-      bookDescription.parentElement.classList.remove("showdescription");
-    });
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-});
+
+
+
+
+/*
+searchButton.addEventListener("click", async () => {
+    try {
+      const category = searchInput.value;
+      const response = await fetch(
+        `https://openlibrary.org/subjects/${category}.json`
+      );
+      const data = await response.json();
+      booksList.innerHTML = "";
+  
+      let html = "";
+      if (data.works) {
+        data.works.forEach((book) => {
+          html += `
+                <div class="book-item text-center" data-id="${book.id}">
+                <div class="book-img">
+                        <img src="${book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-S.jpg` : ''}" alt="">
+                </div>
+                <div class="book-name card">
+                    <h3 class="card-title" id="card-title">${book.title}</h3>
+                    <p>Author: ${book.authors[0].name}</p>  
+                    <button class="description-btn" data-id="${book.key}" id="get-description" >Get description</button>
+                </div>
+                </div> 
+                    `;
+        });
+  
+        booksList.classList.remove("notFound");
+      } else {
+        html = "Sorry, we didn't find any book!";
+        booksList.classList.add("notFound");
+      }
+  
+      booksList.innerHTML = html;
+  
+      const descriptionButtons =
+        document.getElementsByClassName("description-btn");
+  
+      for (const button of descriptionButtons) {
+        button.addEventListener("click", async () => {
+          try {
+            const bookId = button.dataset.id;
+            const bookResponse = await fetch(
+              `https://openlibrary.org${bookId}.json`
+            );
+            const bookData = await bookResponse.json();
+  
+            if (
+              typeof bookData.description === "object" &&
+              bookData.description !== null
+            ) {
+              bookDescriptionText.textContent =
+                bookData.description.value || "No description available.";
+            } else {
+              bookDescriptionText.textContent =
+                bookData.description || "No description available.";
+            }
+  
+            bookDescription.parentElement.classList.add("showdescription");
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        });
+      }
+  
+      descriptionCloseBtn.addEventListener("click", () => {
+        bookDescription.parentElement.classList.remove("showdescription");
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+searchButton.addEventListener("click", async () => {
+    try {
+      const category = searchInput.value;
+      const response = await fetch(
+        `https://openlibrary.org/subjects/${category}.json`
+      );
+      const data = await response.json();
+      booksList.innerHTML = "";
+        
+      let html = "";
+      if (data.works) {
+        data.works.forEach((book) => {
+          html += `
+                <div class="book-item text-center" data-id="${book.id}">
+                <div class="book-img">
+                        <img src="${book.key ? `https://covers.openlibrary.org/b/id/${book.key}-S.jpg` : ''}" alt="">
+                </div>
+                <div class="book-name card">
+                    <h3 class="card-title" id="card-title">${book.title}</h3>
+                    <p>Author: ${book.authors[0].name}</p> 
+                    <button class="description-btn" data-id="${book.key}" id="get-description" >Get description</button>
+                </div>
+                </div> 
+                    `;
+        });
+  
+        booksList.classList.remove("notFound");
+      } else {
+        html = "Sorry, we didn't find any book!";
+        booksList.classList.add("notFound");
+      }
+  
+      booksList.innerHTML = html;
+  
+      const descriptionButtons =
+        document.getElementsByClassName("description-btn");
+  
+      for (const button of descriptionButtons) {
+        button.addEventListener("click", async () => {
+          try {
+            const bookId = button.dataset.id;
+            const bookResponse = await fetch(
+              `https://openlibrary.org${bookId}.json`
+            );
+            const bookData = await bookResponse.json();
+  
+            if (
+              typeof bookData.description === "object" &&
+              bookData.description !== null
+            ) {
+              bookDescriptionText.textContent =
+                bookData.description.value || "No description available.";
+            } else {
+              bookDescriptionText.textContent =
+                bookData.description || "No description available.";
+            }
+  
+            bookDescription.parentElement.classList.add("showdescription");
+          } catch (error) {
+            console.error("Error fetching data:", error);
+          }
+        });
+      }
+  
+      descriptionCloseBtn.addEventListener("click", () => {
+        bookDescription.parentElement.classList.remove("showdescription");
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  });
+
+/*
+
+
+// searchButton.addEventListener("click", async () => {
+//   try {
+//     const category = searchInput.value;
+//     const response = await fetch(
+//       `https://openlibrary.org/subjects/${category}.json`
+//     );
+//     const data = await response.json();
+//     booksList.innerHTML = "";
+
+//     let html = "";
+//     if (data.works) {
+//       data.works.forEach((book) => {
+//         html += `
+//               <div class="book-item text-center" data-id="${book.id}">
+//               <div class="book-img">
+//                   <img src="${book.cover}" alt="">
+//               </div>
+//               <div class="book-name card">
+//                   <h3 class="card-title" id="card-title">${book.title}</h3>
+//                   <p>Author: ${book.authors[0].name}</p> 
+//                   <button class="description-btn" data-id="${book.key}" id="get-description" >Get description</button>
+//               </div>
+//               </div> 
+//                   `;
+//       });
+
+//       booksList.classList.remove("notFound");
+//     } else {
+//       html = "Sorry, we didn't find any book!";
+//       booksList.classList.add("notFound");
+//     }
+
+//     booksList.innerHTML = html;
+
+//     const descriptionButtons =
+//       document.getElementsByClassName("description-btn");
+
+//     for (const button of descriptionButtons) {
+//       button.addEventListener("click", async () => {
+//         try {
+//           const bookId = button.dataset.id;
+//           const bookResponse = await fetch(
+//             `https://openlibrary.org${bookId}.json`
+//           );
+//           const bookData = await bookResponse.json();
+
+//           if (
+//             typeof bookData.description === "object" &&
+//             bookData.description !== null
+//           ) {
+//             bookDescriptionText.textContent =
+//               bookData.description.value || "No description available.";
+//           } else {
+//             bookDescriptionText.textContent =
+//               bookData.description || "No description available.";
+//           }
+
+//           bookDescription.parentElement.classList.add("showdescription");
+//         } catch (error) {
+//           console.error("Error fetching data:", error);
+//         }
+//       });
+//     }
+
+//     descriptionCloseBtn.addEventListener("click", () => {
+//       bookDescription.parentElement.classList.remove("showdescription");
+//     });
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//   }
+// });
+
+
+
+
+
+
 
 /*
 const searchButton = document.getElementById("search-btn");
