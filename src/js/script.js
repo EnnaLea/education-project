@@ -41,7 +41,7 @@ const createBookElement = (book) => {
     </div>
   `;
 
-  const bookElement = $(bookHtml); // Utilizza jQuery per creare l'elemento
+  const bookElement = $(bookHtml);
   const button = bookElement.find(".description-btn");
 
   button.on("click", async () => {
@@ -51,9 +51,8 @@ const createBookElement = (book) => {
       const bookData = bookResponse.data;
 
       const descriptionText = _.get(bookData, 'description.value', bookData.description) || "No description available.";
-      bookDescriptionText.text(descriptionText);
-      console.log(bookDescriptionText);
-      bookDescription.parent().addClass("showdescription"); // Utilizza jQuery per gestire la classe CSS
+      $(bookDescriptionText).text(descriptionText);
+      $(bookDescription).parent().addClass("showdescription");
     } catch (error) {
       console.error("Error fetching book data:", error);
     }
@@ -64,24 +63,24 @@ const createBookElement = (book) => {
 
 $(searchButton).on("click", async () => {
     try {
-      const category = $(searchInput).val(); // Utilizza .val() di jQuery per ottenere il valore dell'input
+      const category = $(searchInput).val();
       const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
       const data = response.data;
-      $(booksList).empty(); // Usa .empty() di jQuery per rimuovere il contenuto del booksList
+      $(booksList).empty();
   
       if (data.works) {
-        const booksPromises = _.map(data.works, createBookElement); // Utilizza _.map di Lodash
+        const booksPromises = _.map(data.works, createBookElement);
         const booksElements = await Promise.all(booksPromises);
   
         $(booksList).append(...booksElements);
-        $(booksList).removeClass("notFound"); // Usa .removeClass() di jQuery per rimuovere la classe
+        $(booksList).removeClass("notFound");
       } else {
-        $(booksList).html("Sorry, we didn't find any book!"); // Usa .html() di jQuery per impostare l'HTML
-        $(booksList).addClass("notFound"); // Usa .addClass() di jQuery per aggiungere la classe
+        $(booksList).html("Sorry, we didn't find any book!");
+        $(booksList).addClass("notFound");
       }
   
       $(descriptionCloseBtn).on("click", () => {
-        $(bookDescription).parent().removeClass("showdescription"); // Usa .parent() di jQuery per ottenere il genitore
+        $(bookDescription).parent().removeClass("showdescription");
       });
     } catch (error) {
       console.error("Error fetching data:", error);

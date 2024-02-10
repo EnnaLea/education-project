@@ -1,5 +1,8 @@
 import "../css/style.css";
 import axios from 'axios';
+import _ from 'lodash';
+import $ from 'jquery';
+
 
 const searchButton = document.getElementById("search-btn");
 const searchInput = document.getElementById("search-input");
@@ -12,12 +15,11 @@ const bookDescriptionText = document.getElementById("book-description");
 const baseApiUrl = process.env.OPENLIBRARY_API_KEY;
 const coverApiUrl = process.env.OPENLIBRARY_API_KEY_COVER;
 
-// Funzione per ottenere il nome dell'autore di un libro
-const getAuthorName = (book) => book.authors[0]?.name || 'Unknown';
+const getAuthorName = (book) => _.get(book, 'authors[0].name', 'Unknown');
 
 // Funzione per ottenere la copertina di un libro
 const getBookCoverURL = (book) => {
-  const coverID = book.cover_id;
+  const coverID = _.get(book, 'cover_id');
   return coverID ? `${coverApiUrl}/b/id/${coverID}-L.jpg` : '';
 };
 
@@ -39,19 +41,18 @@ const createBookElement = (book) => {
     </div>
   `;
 
-  const bookElement = document.createRange().createContextualFragment(bookHtml);
-  const button = bookElement.querySelector(".description-btn");
+  const bookElement = $(bookHtml);
+  const button = bookElement.find(".description-btn");
 
-  button.addEventListener("click", async () => {
+  button.on("click", async () => {
     try {
-      const bookID = button.dataset.id;
+      const bookID = button.data("id");
       const bookResponse = await axios.get(`${baseApiUrl}${bookID}.json`);
       const bookData = bookResponse.data;
 
-      const descriptionText = bookData.description?.value || bookData.description || "No description available.";
-      bookDescriptionText.textContent = descriptionText;
-      console.log(bookDescriptionText);
-      bookDescription.parentElement.classList.add("showdescription");
+      const descriptionText = _.get(bookData, 'description.value', bookData.description) || "No description available.";
+      $(bookDescriptionText).text(descriptionText);
+      $(bookDescription).parent().addClass("showdescription");
     } catch (error) {
       console.error("Error fetching book data:", error);
     }
@@ -60,29 +61,28 @@ const createBookElement = (book) => {
   return bookElement;
 };
 
-// Evento click sul pulsante di ricerca
-searchButton.addEventListener("click", async () => {
-  try {
-    const category = searchInput.value;
-    const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
-    const data = response.data;
-    booksList.innerHTML = "";
-
-    if (data.works) {
-      const booksPromises = data.works.map(createBookElement);
-      const booksElements = await Promise.all(booksPromises);
-
-      booksList.append(...booksElements);
-      booksList.classList.remove("notFound");
-    } else {
-      booksList.innerHTML = "Sorry, we didn't find any book!";
-      booksList.classList.add("notFound");
+$(searchButton).on("click", async () => {
+    try {
+      const category = $(searchInput).val();
+      const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
+      const data = response.data;
+      $(booksList).empty();
+  
+      if (data.works) {
+        const booksPromises = _.map(data.works, createBookElement);
+        const booksElements = await Promise.all(booksPromises);
+  
+        $(booksList).append(...booksElements);
+        $(booksList).removeClass("notFound");
+      } else {
+        $(booksList).html("Sorry, we didn't find any book!");
+        $(booksList).addClass("notFound");
+      }
+  
+      $(descriptionCloseBtn).on("click", () => {
+        $(bookDescription).parent().removeClass("showdescription");
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-
-    descriptionCloseBtn.addEventListener("click", () => {
-      bookDescription.parentElement.classList.remove("showdescription");
-    });
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-});
+  });
