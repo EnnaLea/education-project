@@ -1,4 +1,4 @@
-# Book Search App
+# Education Project
 
 Questo progetto è un'applicativo JavaScript che utilizza le API di Open Library per cercare libri in base alla categoria e visualizzarne i risultati in formato di cards. È possibile ottenere ulteriori dettagli sui libri cliccando sul pulsante "Get Description", che aprirà un modal con la descrizione del libro.
 
@@ -12,7 +12,7 @@ Questo progetto è un'applicativo JavaScript che utilizza le API di Open Library
 1. Clona il repository da GitHub:
 
    ```bash
-   git clone https://github.com/tuonome/book-search-app.git
+   git clone https://github.com/EnnaLea/education-project
 
 
 # inizializzazione progetto con webpack
