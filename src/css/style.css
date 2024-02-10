@@ -188,9 +188,7 @@ body{
 .book-details-content{
     margin: 2rem;
 }
-.book-details-content p:not(.description-category){
-    padding: 1rem 0;
-}
+
 .description-close-btn{
     position: absolute;
     right: 2rem;
@@ -214,60 +212,6 @@ body{
     letter-spacing: 1px;
     padding-bottom: 1rem;
 }
-.description-category{
-    background: #fff;
-    font-weight: 600;
-    color: var(--tenne-tawny);
-    display: inline-block;
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.3rem;
-    -webkit-border-radius: 0.3rem;
-    -moz-border-radius: 0.3rem;
-    -ms-border-radius: 0.3rem;
-    -o-border-radius: 0.3rem;
-}
-.description-category{
-    background: #fff;
-    font-weight: 600;
-    color: var(--tenne-tawny);
-    display: inline-block;
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.3rem;
-    -webkit-border-radius: 0.3rem;
-    -moz-border-radius: 0.3rem;
-    -ms-border-radius: 0.3rem;
-    -o-border-radius: 0.3rem;
-}
-.description-instruct{
-    padding: 1rem 0;
-}
-.description-book-img img{
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-    margin: 0 auto;
-    display: block;
-}
-.description-link{
-    margin: 1.4rem 0;
-}
-.description-link a{
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: 700;
-    transition: all 0.4s linear;
-    -webkit-transition: all 0.4s linear;
-    -moz-transition: all 0.4s linear;
-    -ms-transition: all 0.4s linear;
-    -o-transition: all 0.4s linear;
-}
-.description-link a:hover{
-    opacity: 0.8;
-}
 
 
 /*  */
@@ -278,10 +222,6 @@ body{
     font-weight: 600;
     width: 100%;
 }
-
-
-
-
 
 
 /* Media Queries */

@@ -1,5 +1,5 @@
 import "../css/style.css";
-// require('dotenv').config();
+import axios from 'axios';
 
 const searchButton = document.getElementById("search-btn");
 const searchInput = document.getElementById("search-input");
@@ -8,14 +8,18 @@ const bookDescription = document.getElementById("book-details-content");
 const descriptionCloseBtn = document.getElementById("description-close-btn");
 const bookDescriptionText = document.getElementById("book-description");
 
-// Funzione per ottenere la copertina di un libro
-const getBookCoverURL = (book) => {
-  const coverID = book.cover_id;
-  return coverID ? `https://covers.openlibrary.org/b/id/${coverID}-L.jpg` : '';
-};
+// URL base per le richieste API
+const baseApiUrl = process.env.OPENLIBRARY_API_KEY;
+const coverApiUrl = process.env.OPENLIBRARY_API_KEY_COVER;
 
 // Funzione per ottenere il nome dell'autore di un libro
 const getAuthorName = (book) => book.authors[0]?.name || 'Unknown';
+
+// Funzione per ottenere la copertina di un libro
+const getBookCoverURL = (book) => {
+  const coverID = book.cover_id;
+  return coverID ? `${coverApiUrl}/b/id/${coverID}-L.jpg` : '';
+};
 
 // Funzione per creare un elemento libro
 const createBookElement = (book) => {
@@ -41,8 +45,8 @@ const createBookElement = (book) => {
   button.addEventListener("click", async () => {
     try {
       const bookID = button.dataset.id;
-      const bookResponse = await fetch(`https://openlibrary.org${bookID}.json`);
-      const bookData = await bookResponse.json();
+      const bookResponse = await axios.get(`${baseApiUrl}${bookID}.json`);
+      const bookData = bookResponse.data;
 
       const descriptionText = bookData.description?.value || bookData.description || "No description available.";
       bookDescriptionText.textContent = descriptionText;
@@ -60,8 +64,8 @@ const createBookElement = (book) => {
 searchButton.addEventListener("click", async () => {
   try {
     const category = searchInput.value;
-    const response = await fetch(`https://openlibrary.org/subjects/${category}.json`);
-    const data = await response.json();
+    const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
+    const data = response.data;
     booksList.innerHTML = "";
 
     if (data.works) {
