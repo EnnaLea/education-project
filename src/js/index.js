@@ -52,7 +52,7 @@ const createBookElement = (book) => {
   button.on("click", async () => {
     try {
       const bookID = button.data("id");
-      const bookResponse = await axios.get(`${baseApiUrl}${bookID}.json`);
+      const bookResponse = await axios.get(`https://openlibrary.org${bookID}.json`);
       const bookData = bookResponse.data;
 
       const descriptionText = _.get(bookData, 'description.value', bookData.description) || "No description available.";
@@ -70,7 +70,7 @@ const createBookElement = (book) => {
 $(searchButton).on("click", async () => {
     try {
       const category = $(searchInput).val();
-      const response = await axios.get(`https://covers.openlibrary.org/subjects/${category}.json`);
+      const response = await axios.get(`https://openlibrary.org/subjects/${category}.json`);
       const data = response.data;
       $(booksList).empty();
   
