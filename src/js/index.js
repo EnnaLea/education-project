@@ -45,6 +45,7 @@ const createBookElement = (book) => {
   const bookElement = $(bookHtml);
   const button = bookElement.find(".description-btn");
 
+  //Funzione per aprire la descrizione del libro
   button.on("click", async () => {
     try {
       const bookID = button.data("id");
@@ -62,6 +63,7 @@ const createBookElement = (book) => {
   return bookElement;
 };
 
+//Funzione per effettuare la ricerca dei libri
 $(searchButton).on("click", async () => {
     try {
       const category = $(searchInput).val();

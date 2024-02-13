@@ -15,7 +15,7 @@ const stylesHandler = isProduction
   : "style-loader";
 
 const config = {
-  entry: "./src/js/script.js",
+  entry: "./src/js/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: 'bundle.js'
@@ -27,7 +27,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "prova4.html",
+      template: "index.html",
     }),
 
     new DotenvWebpackPlugin(),
