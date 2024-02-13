@@ -70,7 +70,7 @@ const createBookElement = (book) => {
 $(searchButton).on("click", async () => {
     try {
       const category = $(searchInput).val();
-      const response = await axios.get(`https://openlibrary.org/subjects/${category}.json`);
+      const response = await axios.get(`https://covers.openlibrary.org/subjects/${category}.json`);
       const data = response.data;
       $(booksList).empty();
   
