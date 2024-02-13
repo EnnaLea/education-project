@@ -24,7 +24,7 @@ const getAuthorName = (book) => _.get(book, 'authors[0].name', 'Unknown');
 // Funzione per ottenere la copertina di un libro
 const getBookCoverURL = (book) => {
   const coverID = _.get(book, 'cover_id');
-  return coverID ? `${coverApiUrl}/b/id/${coverID}-L.jpg` : '';
+  return coverID ? `https://covers.openlibrary.org/b/id/${coverID}-L.jpg` : '';
 };
 
 // Funzione per creare un elemento libro
@@ -70,7 +70,7 @@ const createBookElement = (book) => {
 $(searchButton).on("click", async () => {
     try {
       const category = $(searchInput).val();
-      const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
+      const response = await axios.get(`https://openlibrary.org/subjects/${category}.json`);
       const data = response.data;
       $(booksList).empty();
   
