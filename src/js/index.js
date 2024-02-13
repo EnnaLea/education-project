@@ -1,4 +1,4 @@
-import "../css/style.css";
+// import "../css/style.css";
 import axios from 'axios';
 import _ from 'lodash';
 import $ from 'jquery';
