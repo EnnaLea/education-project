@@ -44,6 +44,9 @@ const config = {
         test: /\.(js|jsx)$/i,
         exclude: /node_modules/,
         loader: "babel-loader",
+        options: {
+          presets: ['@babel/preset-env'],
+        },
       },
       {
         test: /\.css$/i,
