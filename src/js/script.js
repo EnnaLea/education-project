@@ -4,12 +4,119 @@ import _ from 'lodash';
 import $ from 'jquery';
 
 
+
+
+
+/*
+
 const searchButton = document.getElementById("search-btn");
 const searchInput = document.getElementById("search-input");
 const booksList = document.getElementById("book");
 const bookDescription = document.getElementById("book-details-content");
 const descriptionCloseBtn = document.getElementById("description-close-btn");
 const bookDescriptionText = document.getElementById("book-description");
+
+// URL base per le richieste API
+const baseApiUrl = process.env.OPENLIBRARY_API_KEY;
+const coverApiUrl = process.env.OPENLIBRARY_API_KEY_COVER;
+
+const getAuthorName = (book) => book?.authors?.[0]?.name || 'Unknown';
+
+// Funzione per ottenere la copertina di un libro
+const getBookCoverURL = (book) => {
+  const coverID = book?.cover_id;
+  return coverID ? `${coverApiUrl}/b/id/${coverID}-L.jpg` : '';
+};
+
+// Funzione per creare un elemento libro
+const createBookElement = (book) => {
+  const coverURL = getBookCoverURL(book);
+  const authorName = getAuthorName(book);
+
+  const bookHtml = `
+    <div class="book-item text-center" data-id="${book.id}">
+      <div class="book-img">
+        <img src="${coverURL}" alt="cover">
+      </div>
+      <div class="book-name">
+        <h3>${book.title}</h3>
+        <p>Author: ${authorName}</p> 
+        <button class="description-btn" data-id="${book.key}">Get description</button>
+      </div>
+    </div>
+  `;
+
+  const bookElement = document.createElement('div');
+  bookElement.innerHTML = bookHtml;
+  const button = bookElement.querySelector(".description-btn");
+
+  button.addEventListener("click", () => {
+    axios.get(`${baseApiUrl}${button.dataset.id}.json`)
+      .then(bookResponse => {
+        const bookData = bookResponse.data;
+        const descriptionText = bookData.description?.value || bookData.description || "No description available.";
+        bookDescriptionText.textContent = descriptionText;
+        bookDescription.parentElement.classList.add("showdescription");
+      })
+      .catch(error => {
+        console.error("Error fetching book data:", error);
+      });
+  });
+
+  return bookElement;
+};
+
+searchButton.addEventListener("click", () => {
+  const category = searchInput.value;
+  axios.get(`${baseApiUrl}/subjects/${category}.json`)
+    .then(response => {
+      const data = response.data;
+      booksList.innerHTML = '';
+
+      if (data.works) {
+        Promise.all(data.works.map(createBookElement))
+          .then(booksElements => {
+            booksList.append(...booksElements);
+            booksList.classList.remove("notFound");
+          });
+      } else {
+        booksList.classList.add("notFound");
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+      booksList.innerHTML = "Sorry, we didn't find any book!";
+      booksList.classList.add("notFound");
+    });
+});
+
+descriptionCloseBtn.addEventListener("click", () => {
+  bookDescription.parentElement.classList.remove("showdescription");
+});
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const searchButton = document.getElementById("search-btn");
+const searchInput = document.getElementById("search-input");
+const booksList = document.getElementById("book");
+const bookDescription = document.getElementById("book-details-content");
+const descriptionCloseBtn = document.getElementById("description-close-btn");
+const bookDescriptionText = document.getElementById("book-description");
+
 
 // URL base per le richieste API
 const baseApiUrl = process.env.OPENLIBRARY_API_KEY;
@@ -74,16 +181,14 @@ $(searchButton).on("click", async () => {
   
         $(booksList).append(...booksElements);
         $(booksList).removeClass("notFound");
-      } else {
-        $(booksList).html("Sorry, we didn't find any book!");
-        $(booksList).addClass("notFound");
-      }
+      } 
   
       $(descriptionCloseBtn).on("click", () => {
         $(bookDescription).parent().removeClass("showdescription");
       });
     } catch (error) {
-      console.error("Error fetching data:", error);
+        $(booksList).html("Sorry, we didn't find any book!");
+        $(booksList).addClass("notFound");
     }
   });
 

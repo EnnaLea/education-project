@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Book Search</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -20,47 +21,67 @@
     />
   </head>
   <body>
-    <div class="container">
-      <div class="book-wrapper">
-        <div class="book-search">
-          <h2 class="title">Search all the books you want to read</h2>
-          <div class="book-search-box">
-            <input
-              controltype="text"
-              class="search-control"
-              placeholder="Enter an category"
-              id="search-input"
-            />
 
-            <button type="submit" class="search-btn btn" id="search-btn">
-              <i class="fas fa-search"></i>
+    <header>
+      <!-- header dell'applicazione -->
+      <div class="header">
+        <img class="logo" src="img/logo.png" alt="logo">
+        <h1 >BookSearch.</h1>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="book-wrapper">
+          <div class="book-search">
+            <h2 class="title">Search all the books you want to read</h2>
+            <div class="book-search-box">
+              <input
+                controltype="text"
+                class="search-control"
+                placeholder="Enter an category"
+                id="search-input"
+              />
+  
+              <button type="submit" class="search-btn btn" id="search-btn">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+  
+          <div class="book-result">
+            <h2 class="title">Your Search Results:</h2>
+            <div id="book">
+              <!-- book item -->
+            </div>
+          </div>
+  
+          <div class="book-details">
+            <!-- description close btn -->
+            <button
+              type="button"
+              class="btn description-close-btn"
+              id="description-close-btn"
+            >
+              <i class="fas fa-times"></i>
             </button>
-          </div>
-        </div>
-
-        <div class="book-result">
-          <h2 class="title">Your Search Results:</h2>
-          <div id="book">
-            <!-- book item -->
-          </div>
-        </div>
-
-        <div class="book-details">
-          <!-- description close btn -->
-          <button
-            type="button"
-            class="btn description-close-btn"
-            id="description-close-btn"
-          >
-            <i class="fas fa-times"></i>
-          </button>
-
-          <!-- book content -->
-          <div id="book-details-content" class="book-details-content">
-            <p id="book-description"></p>
+  
+            <!-- book content -->
+            <div id="book-details-content" class="book-details-content">
+              <p id="book-description"></p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
+
+    <footer>
+      <div class="footer">
+        <div class="copyright">
+          <p> &copy; All Rights reserved to BookSearch 2024.</p>
+        </div>
+      </div>   
+    </footer>
+
   </body>
 </html>

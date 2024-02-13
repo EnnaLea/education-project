@@ -11,6 +11,7 @@ const bookDescription = document.getElementById("book-details-content");
 const descriptionCloseBtn = document.getElementById("description-close-btn");
 const bookDescriptionText = document.getElementById("book-description");
 
+
 // URL base per le richieste API
 const baseApiUrl = process.env.OPENLIBRARY_API_KEY;
 const coverApiUrl = process.env.OPENLIBRARY_API_KEY_COVER;
@@ -74,15 +75,13 @@ $(searchButton).on("click", async () => {
   
         $(booksList).append(...booksElements);
         $(booksList).removeClass("notFound");
-      } else {
-        $(booksList).html("Sorry, we didn't find any book!");
-        $(booksList).addClass("notFound");
-      }
+      } 
   
       $(descriptionCloseBtn).on("click", () => {
         $(bookDescription).parent().removeClass("showdescription");
       });
     } catch (error) {
-      console.error("Error fetching data:", error);
+        $(booksList).html("Sorry, we didn't find any book!");
+        $(booksList).addClass("notFound");
     }
   });
