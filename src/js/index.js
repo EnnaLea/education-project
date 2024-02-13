@@ -1,10 +1,10 @@
-require ("../css/style.css");
-const axios = require('axios');
-// require (axios from 'axios');
-const _ = require('lodash');
-// require (_ from 'lodash');
-const $ = require('jquery');
-// require ($ from 'jquery');
+import "../css/style.css";
+import axios from 'axios';
+import _ from 'lodash';
+import $ from 'jquery';
+
+
+
 
 
 const searchButton = document.getElementById("search-btn");
