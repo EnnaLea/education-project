@@ -3,7 +3,9 @@
 Questo progetto è un'applicativo JavaScript che utilizza le API di Open Library per cercare libri in base alla categoria e visualizzarne i risultati in formato di cards. È possibile ottenere ulteriori dettagli sui libri cliccando sul pulsante "Get Description", che aprirà un modal con la descrizione del libro.
 
 # Link sito:
- https://ennalea.github.io/education-project/
+booksearchapp1one.netlify.app
+
+https://booksearchapp1one.netlify.app/
 
 ## Prerequisiti
 
@@ -26,7 +28,11 @@ Questo progetto è un'applicativo JavaScript che utilizza le API di Open Library
 
 # Configurazione delle variabili d'ambiente
 
-Crea un file .env nella radice del progetto e inserisci le seguenti variabili d'ambiente con i tuoi valori
+Crea un file .env nella radice del progetto e inserisci le seguenti variabili d'ambiente con i seguenti valori:
+OPENLIBRARY_API_KEY = https://openlibrary.org
+
+OPENLIBRARY_API_KEY_COVER = https://covers.openlibrary.org
+
 
 ## Avviare l'applicazione
 

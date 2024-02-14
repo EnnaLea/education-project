@@ -2,10 +2,6 @@ import "../css/style.css";
 import axios from 'axios';
 import _ from 'lodash';
 import $ from 'jquery';
-import {OPENLIBRARY_API_KEY} from '$env/static/public'
-import {OPENLIBRARY_API_KEY_COVER} from '$env/static/public'
-
-
 
 
 
