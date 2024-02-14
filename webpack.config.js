@@ -1,12 +1,9 @@
-
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-
-const DotenvWebpackPlugin = require('dotenv-webpack');
-const webpack = require('webpack');
-
+const DotenvWebpackPlugin = require("dotenv-webpack");
+const webpack = require("webpack");
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -18,12 +15,12 @@ const config = {
   entry: "./src/js/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: 'bundle.js'
+    filename: "bundle.js",
   },
   devServer: {
     open: true,
     host: "localhost",
-    static: path.resolve(__dirname, "dist")
+    static: path.resolve(__dirname, "dist"),
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -33,9 +30,9 @@ const config = {
     new DotenvWebpackPlugin(),
 
     new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      _: 'lodash',
+      $: "jquery",
+      jQuery: "jquery",
+      _: "lodash",
     }),
   ],
   module: {
@@ -45,7 +42,7 @@ const config = {
         exclude: /node_modules/,
         loader: "babel-loader",
         options: {
-          presets: ['@babel/preset-env'],
+          presets: ["@babel/preset-env"],
         },
       },
       {
@@ -55,9 +52,8 @@ const config = {
 
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif|ico|jpeg)$/,
-        type: 'asset/resource',
+        type: "asset/resource",
       },
-
 
       // Add your rules for custom modules here
       // Learn more about loaders from https://webpack.js.org/loaders/

@@ -1,9 +1,7 @@
 import "../css/style.css";
-import axios from 'axios';
-import _ from 'lodash';
-import $ from 'jquery';
-
-
+import axios from "axios";
+import _ from "lodash";
+import $ from "jquery";
 
 const searchButton = document.getElementById("search-btn");
 const searchInput = document.getElementById("search-input");
@@ -12,18 +10,17 @@ const bookDescription = document.getElementById("book-details-content");
 const descriptionCloseBtn = document.getElementById("description-close-btn");
 const bookDescriptionText = document.getElementById("book-description");
 
-
 // URL base per le richieste API
 const baseApiUrl = process.env.OPENLIBRARY_API_KEY;
 const coverApiUrl = process.env.OPENLIBRARY_API_KEY_COVER;
 
-const getAuthorName = (book) => _.get(book, 'authors[0].name', 'Unknown');
+const getAuthorName = (book) => _.get(book, "authors[0].name", "Unknown");
 
 // Funzione per ottenere la copertina di un libro
 const getBookCoverURL = (book) => {
-  const coverID = _.get(book, 'cover_id');
+  const coverID = _.get(book, "cover_id");
   // return coverID ? `https://covers.openlibrary.org/b/id/${coverID}-L.jpg` : '';
-  return coverID ? `${coverApiUrl}/b/id/${coverID}-L.jpg` : '';
+  return coverID ? `${coverApiUrl}/b/id/${coverID}-L.jpg` : "";
 };
 
 // Funzione per creare un elemento libro
@@ -55,7 +52,9 @@ const createBookElement = (book) => {
       const bookResponse = await axios.get(`${baseApiUrl}${bookID}.json`);
       const bookData = bookResponse.data;
 
-      const descriptionText = _.get(bookData, 'description.value', bookData.description) || "No description available.";
+      const descriptionText =
+        _.get(bookData, "description.value", bookData.description) ||
+        "No description available.";
       $(bookDescriptionText).text(descriptionText);
       $(bookDescription).parent().addClass("showdescription");
     } catch (error) {
@@ -68,26 +67,26 @@ const createBookElement = (book) => {
 
 //Funzione per effettuare la ricerca dei libri
 $(searchButton).on("click", async () => {
-    try {
-      const category = $(searchInput).val();
-      // const response = await axios.get(`https://openlibrary.org/subjects/${category}.json`);
-      const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
-      const data = response.data;
-      $(booksList).empty();
-  
-      if (data.works) {
-        const booksPromises = _.map(data.works, createBookElement);
-        const booksElements = await Promise.all(booksPromises);
-  
-        $(booksList).append(...booksElements);
-        $(booksList).removeClass("notFound");
-      } 
-  
-      $(descriptionCloseBtn).on("click", () => {
-        $(bookDescription).parent().removeClass("showdescription");
-      });
-    } catch (error) {
-        $(booksList).html("Sorry, we didn't find any book!");
-        $(booksList).addClass("notFound");
+  try {
+    const category = $(searchInput).val();
+    // const response = await axios.get(`https://openlibrary.org/subjects/${category}.json`);
+    const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
+    const data = response.data;
+    $(booksList).empty();
+
+    if (data.works) {
+      const booksPromises = _.map(data.works, createBookElement);
+      const booksElements = await Promise.all(booksPromises);
+
+      $(booksList).append(...booksElements);
+      $(booksList).removeClass("notFound");
     }
-  });
+
+    $(descriptionCloseBtn).on("click", () => {
+      $(bookDescription).parent().removeClass("showdescription");
+    });
+  } catch (error) {
+    $(booksList).html("Sorry, we didn't find any book!");
+    $(booksList).addClass("notFound");
+  }
+});
