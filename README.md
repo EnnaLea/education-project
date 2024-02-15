@@ -47,7 +47,6 @@ OPENLIBRARY_API_KEY_COVER = https://covers.openlibrary.org
 bash:
 
 - `npm run build:dev`
-
 - copiare la cartella img in dist
 
 
@@ -56,7 +55,8 @@ Una volta che le variabili d'ambiente sono configurate, puoi avviare l'applicazi
 
 bash -`npm run build`
 
-- avvia il server locale per visualizzare l'applicazione: -`npm run serve`
+- avvia il server locale per visualizzare l'applicazione: 
+  -`npm run serve`
   L'applicazione sarà disponibile all'indirizzo http://localhost:8080 nel tuo browser.
 
 
