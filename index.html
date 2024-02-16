@@ -26,7 +26,7 @@
       <!-- header dell'applicazione -->
       <div class="header">
         <img class="logo" src="img/logo.png" alt="logo" />
-        <h1>BookSearch.</h1>
+        <h1 class="site-title">BookSearch.</h1>
       </div>
     </header>
 
@@ -39,20 +39,26 @@
               <input
                 controltype="text"
                 class="search-control"
-                placeholder="Enter an category"
+                placeholder="e.g. action"
                 id="search-input"
               />
 
-              <button type="submit" class="search-btn btn" id="search-btn">
+              <button type="submit" aria-label="Search books" class="search-btn btn" id="search-btn">
                 <i class="fas fa-search"></i>
               </button>
+            </div>
+            <div id="loader" class="loader">
+              <div class="spinner"></div>
             </div>
           </div>
 
           <div class="book-result">
-            <h2 class="title">Your Search Results:</h2>
+            <div class="books-list notFound">
+              <h2 class="title" id="search-results-heading">Your Search Results:</h2>
+            </div>
+
             <div id="book">
-              <!-- book item -->
+              <!-- book-item -->
             </div>
           </div>
 
@@ -84,3 +90,39 @@
     </footer>
   </body>
 </html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Search for a book category</h1>
+    <input type="text" id="search-input" placeholder="e.g. Adventure">
+    <button id="search-btn" aria-label="Search books">Search</button>
+  </div>
+  <div id="loader" class="loader">
+    <div class="spinner"></div>
+  </div>
+  <div id="book" class="books-list notFound">
+    <h2 id="search-results-heading">Your Search Results:</h2>
+  </div>
+  <div id="book-details" class="book-details">
+    <button id="description-close-btn" aria-label="Close book description">Close</button>
+    <div id="book-details-content">
+      <h2 id="book-title"></h2>
+      <div id="book-description"></div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html> -->

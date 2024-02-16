@@ -3,12 +3,18 @@ import axios from "axios";
 import _ from "lodash";
 import $ from "jquery";
 
+//velocizzazione e refactoring
 const searchButton = document.getElementById("search-btn");
 const searchInput = document.getElementById("search-input");
 const booksList = document.getElementById("book");
 const bookDescription = document.getElementById("book-details-content");
 const descriptionCloseBtn = document.getElementById("description-close-btn");
 const bookDescriptionText = document.getElementById("book-description");
+const searchResultsHeading = document.getElementById("search-results-heading");
+const loader = document.getElementById("loader");
+
+// Nasconde elemento che contiene la frase "Your Search Result" se non ci sono risultati di ricerca
+searchResultsHeading.style.display = "none";
 
 // URL base per le richieste API
 const baseApiUrl = process.env.OPENLIBRARY_API_KEY;
@@ -43,7 +49,7 @@ const createBookElement = (book) => {
   const bookElement = $(bookHtml);
   const button = bookElement.find(".description-btn");
 
-  //Funzione per aprire la descrizione del libro
+  // Funzione per aprire la descrizione del libro
   button.on("click", async () => {
     try {
       const bookID = button.data("id");
@@ -63,27 +69,62 @@ const createBookElement = (book) => {
   return bookElement;
 };
 
-//Funzione per effettuare la ricerca dei libri
-$(searchButton).on("click", async () => {
+// Funzione per effettuare la ricerca dei libri
+const searchBooks = async () => {
   try {
+    loader.style.display = "flex";
     const category = $(searchInput).val();
     const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
     const data = response.data;
     $(booksList).empty();
 
-    if (data.works) {
+    if (data.works && data.works.length > 0) {
       const booksPromises = _.map(data.works, createBookElement);
       const booksElements = await Promise.all(booksPromises);
 
+      searchResultsHeading.style.display = "block";
       $(booksList).append(...booksElements);
       $(booksList).removeClass("notFound");
+    } else {
+      searchResultsHeading.style.display = "none";
+      $(booksList).html("No results found!");
+      $(booksList).addClass("notFound");
     }
-
-    $(descriptionCloseBtn).on("click", () => {
-      $(bookDescription).parent().removeClass("showdescription");
-    });
   } catch (error) {
     $(booksList).html("Sorry, we didn't find any book!");
     $(booksList).addClass("notFound");
+  } finally {
+    loader.style.display = "none";
+  }
+};
+
+// Utilizzo di _.debounce per limitare la frequenza delle richieste API durante la digitazione di una query di ricerca
+const debouncedSearch = _.debounce(searchBooks, 500);
+
+// Aggiungiungo l'evento "keyup" al campo di ricerca con funzione di _.debounce
+$(searchInput).on("keyup", async (event) => {
+  if (event.key === "Enter") {
+    await debouncedSearch();
   }
 });
+
+// Aggiungiungo l'evento "click" al pulsante di ricerca con funzione di _.debounce
+$(searchButton).on("click", async () => {
+  await debouncedSearch();
+});
+
+// Aggiungiungo l'evento "click" al pulsante di chiusura della descrizione del libro
+$(descriptionCloseBtn).on("click", () => {
+  $(bookDescription).parent().removeClass("showdescription");
+});
+
+// Utilizzo di axios.all per scaricare le immagini delle cover in parallelo
+const downloadCovers = (books) => {
+  const coverPromises = _.map(books, (book) => {
+    const coverID = _.get(book, "cover_id");
+    return coverID
+      ? axios.get(`${coverApiUrl}/b/id/${coverID}-L.jpg`)
+      : Promise.resolve();
+  });
+  return Promise.all(coverPromises);
+};
