@@ -186,8 +186,8 @@ h1 {
   -moz-border-radius: 1rem;
   -ms-border-radius: 1rem;
   -o-border-radius: 1rem;
-  width: 90%;
-  height: 90%;
+  width: 70%;
+  height: 70%;
   overflow-y: scroll;
   display: none;
   padding: 2rem 0;
@@ -314,10 +314,6 @@ h1 {
     min-height: 80vh;
   }
 
-  /* .book-details {
-    width: 500px;
-    height: 50%;
-  } */
 }
 
 @media screen and (min-width: 992px) {
