@@ -73,7 +73,7 @@ const createBookElement = (book) => {
 // Funzione per effettuare la ricerca dei libri
 const searchBooks = async () => {
   try {
-    loader.style.display = "block";
+    loader.style.display = "flex";
     const category = $(searchInput).val();
     const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
     const data = response.data;
