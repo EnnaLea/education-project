@@ -93,6 +93,7 @@ const searchBooks = async () => {
     }
   } catch (error) {
     $(booksList).html("Sorry, we didn't find any book!");
+    searchResultsHeading.style.display = "none";
     $(booksList).addClass("notFound");
   } finally {
     loader.style.display = "none";
