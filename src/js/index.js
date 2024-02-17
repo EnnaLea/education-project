@@ -28,6 +28,7 @@ const getBookCoverURL = (book) => {
   return coverID ? `${coverApiUrl}/b/id/${coverID}-L.jpg` : "";
 };
 
+
 // Funzione per creare un elemento libro
 const createBookElement = (book) => {
   const coverURL = getBookCoverURL(book);
@@ -72,7 +73,7 @@ const createBookElement = (book) => {
 // Funzione per effettuare la ricerca dei libri
 const searchBooks = async () => {
   try {
-    loader.style.display = "flex";
+    loader.style.display = "block";
     const category = $(searchInput).val();
     const response = await axios.get(`${baseApiUrl}/subjects/${category}.json`);
     const data = response.data;
